@@ -74,11 +74,16 @@ function App() {
         </h1>
 
         <div className="mb-8">
-          <h2 className="text-xl">Products</h2>
+          <h2 className="text-xl font-semibold text-gray-700 mb-4">Products</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {PRODUCTS.map((product) => (
-              <div className="bg-white border border-gray-200 rounded-lg p-4" key={product.id}>
-                <h3 className="font-semibold text-gray-800 mb-1">{product.name}</h3>
+              <div
+                key={product.id}
+                className="bg-white border border-gray-200 rounded-lg p-4"
+              >
+                <h3 className="font-semibold text-gray-800 mb-1">
+                  {product.name}
+                </h3>
                 <p className="text-gray-600 mb-3">₹{product.price}</p>
                 <button
                   onClick={() => addToCart(product)}
@@ -92,16 +97,16 @@ function App() {
         </div>
 
         <div className="bg-white border border-gray-200 rounded-lg p-6 mb-6">
-          <h2>Cart Summary</h2>
-        </div>
+          <h2 className="text-xl font-semibold text-gray-700 mb-4">
+            Cart Summary
+          </h2>
 
-        <div className="flex justify-between items-center text-lg mb-4">
-          {" "}
-          <span>Subtotal :</span>
-          <span className="font-semibold">{cartSubtotal}</span>
-        </div>
+          <div className="flex justify-between items-center text-lg mb-4">
+            <span>Subtotal:</span>
+            <span className="font-semibold">₹{cartSubtotal}</span>
+          </div>
 
-        {amountNeeded > 0 ? (
+          {amountNeeded > 0 ? (
             <div className="bg-blue-50 border border-blue-200 rounded p-3 text-blue-800 text-center">
               Add ₹{amountNeeded} more to get a FREE Wireless Mouse!
             </div>
@@ -112,59 +117,63 @@ function App() {
               </div>
             )
           )}
-      </div>
+        </div>
 
-      <div className="bg-white border border-gray-200 rounded-lg p-6">
-        <h2 className="text-xl font-semibold text-gray-700 mb-4">CArt items</h2>
+        <div className="bg-white border border-gray-200 rounded-lg p-6">
+          <h2 className="text-xl font-semibold text-gray-700 mb-4">
+            Cart Items
+          </h2>
 
-        {cart.length === 0 ? (
-          <p className="text-gray-500 text-center py-8">Your cart is empty</p>
-        ) : (
-          <div className="space-y-3">
-            {cart.map((item) => (
-              <div
-                key={item.id}
-                className="flex items-center justify-between p-3 border border-gray-200 rounded"
-              >
-                <div className="flex-1">
-                  <div className="flex items-center">
-                    <span className="font-medium text-gray-800">
-                      {item.name}
-                    </span>
-                    {item.id === FREE_GIFT.id && (
-                      <span className="ml-2 bg-green-100 text-green-800 text-xs px-2 py-1 rounded">
-                        FREE GIFT
+          {cart.length === 0 ? (
+            <p className="text-gray-500 text-center py-8">Your cart is empty</p>
+          ) : (
+            <div className="space-y-3">
+              {cart.map((item) => (
+                <div
+                  key={item.id}
+                  className="flex items-center justify-between p-3 border border-gray-200 rounded"
+                >
+                  <div className="flex-1">
+                    <div className="flex items-center">
+                      <span className="font-medium text-gray-800">
+                        {item.name}
                       </span>
-                    )}
+                      {item.id === FREE_GIFT.id && (
+                        <span className="ml-2 bg-green-100 text-green-800 text-xs px-2 py-1 rounded">
+                          FREE GIFT
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-sm text-gray-600">
+                      ₹{item.price} × {item.quantity} = ₹
+                      {item.price * item.quantity}
+                    </p>
                   </div>
-                  <p className="text-sm text-gray-600">
-                    ₹{item.price} × {item.quantity} = ₹
-                    {item.price * item.quantity}
-                  </p>
+
+                  <div className="flex items-center space-x-2">
+                    <button
+                      onClick={() => updateCartQuantity(item.id, -1)}
+                      className="w-8 h-8 bg-red-500 hover:bg-red-600 text-white rounded flex items-center justify-center transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      disabled={item.id === FREE_GIFT.id}
+                    >
+                      <Minus size={16} />
+                    </button>
+                    <span className="w-8 text-center font-semibold">
+                      {item.quantity}
+                    </span>
+                    <button
+                      onClick={() => updateCartQuantity(item.id, 1)}
+                      className="w-8 h-8 bg-green-500 hover:bg-green-600 text-white rounded flex items-center justify-center transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      disabled={item.id === FREE_GIFT.id}
+                    >
+                      <Plus size={16} />
+                    </button>
+                  </div>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <button
-                    onClick={() => updateCartQuantity(item.id, -1)}
-                    className="w-8 h-8 bg-red-500 hover:bg-red-600 text-white rounded flex items-center justify-center transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                    disabled={item.id === FREE_GIFT.id}
-                  >
-                    <Minus size={16} />
-                  </button>
-                  <span className="w-8 text-center font-semibold">
-                    {item.quantity}
-                  </span>
-                  <button
-                    onClick={() => updateCartQuantity(item.id, 1)}
-                    className="w-8 h-8 bg-green-500 hover:bg-green-600 text-white rounded flex items-center justify-center transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                    disabled={item.id === FREE_GIFT.id}
-                  >
-                    <Plus size={16} />
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
