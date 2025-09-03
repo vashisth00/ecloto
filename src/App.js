@@ -74,19 +74,24 @@ function App() {
         </h1>
 
         <div className="mb-8">
-          <h2>Products</h2>
-          <div>
+          <h2 className="text-xl">Products</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {PRODUCTS.map((product) => (
-              <div key={product.id}>
-                <h3>{product.name}</h3>
-                <p>{product.price}</p>
-                <button onClick={() => addToCart(product)}>Add to Cart</button>
+              <div className="bg-white border border-gray-200 rounded-lg p-4" key={product.id}>
+                <h3 className="font-semibold text-gray-800 mb-1">{product.name}</h3>
+                <p className="text-gray-600 mb-3">₹{product.price}</p>
+                <button
+                  onClick={() => addToCart(product)}
+                  className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded transition-colors"
+                >
+                  Add to Cart
+                </button>
               </div>
             ))}
           </div>
         </div>
 
-        <div>
+        <div className="bg-white border border-gray-200 rounded-lg p-6 mb-6">
           <h2>Cart Summary</h2>
         </div>
 
@@ -97,10 +102,16 @@ function App() {
         </div>
 
         {amountNeeded > 0 ? (
-          <div>Add {amountNeeded}for free wireless mouse </div>
-        ) : (
-          showGiftMessage && <div> You get free wireless mouse </div>
-        )}
+            <div className="bg-blue-50 border border-blue-200 rounded p-3 text-blue-800 text-center">
+              Add ₹{amountNeeded} more to get a FREE Wireless Mouse!
+            </div>
+          ) : (
+            showGiftMessage && (
+              <div className="bg-green-50 border border-green-200 rounded p-3 text-green-800 text-center">
+                You got a free Wireless Mouse!
+              </div>
+            )
+          )}
       </div>
 
       <div className="bg-white border border-gray-200 rounded-lg p-6">
