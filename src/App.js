@@ -1,6 +1,7 @@
 import logo from "./logo.svg";
 import "./App.css";
 import { useEffect, useState } from "react";
+import { Minus, Plus } from "lucide-react";
 
 const PRODUCTS = [
   { id: 1, name: "Laptop", price: 500 },
@@ -36,9 +37,34 @@ function App() {
     }
   }, [cartSubtotal]);
 
-  const addToCart = (product) => {};
+  const addToCart = (product) => {
+    const existingItem = cart.find((item) => item.id === product.id);
+    if (existingItem) {
+      setCart((prevCart) =>
+        prevCart.map((item) =>
+          item.id === product.id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        )
+      );
+    } else {
+      setCart((prevCart) => [...prevCart, { ...product, quantity: 1 }]);
+    }
+  };
 
-  const updateCartQuantity = (productId, delta) => {};
+  const updateCartQuantity = (productId, delta) => {
+    setCart((prevCart) =>
+      prevCart
+        .map((item) => {
+          if (item.id === productId) {
+            const newQty = Math.max(0, item.quantity + delta);
+            return newQty === 0 ? null : { ...item, quantity: newQty };
+          }
+          return item;
+        })
+        .filter(Boolean)
+    );
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
@@ -104,6 +130,25 @@ function App() {
                     ₹{item.price} × {item.quantity} = ₹
                     {item.price * item.quantity}
                   </p>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <button
+                    onClick={() => updateCartQuantity(item.id, -1)}
+                    className="w-8 h-8 bg-red-500 hover:bg-red-600 text-white rounded flex items-center justify-center transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    disabled={item.id === FREE_GIFT.id}
+                  >
+                    <Minus size={16} />
+                  </button>
+                  <span className="w-8 text-center font-semibold">
+                    {item.quantity}
+                  </span>
+                  <button
+                    onClick={() => updateCartQuantity(item.id, 1)}
+                    className="w-8 h-8 bg-green-500 hover:bg-green-600 text-white rounded flex items-center justify-center transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    disabled={item.id === FREE_GIFT.id}
+                  >
+                    <Plus size={16} />
+                  </button>
                 </div>
               </div>
             ))}
